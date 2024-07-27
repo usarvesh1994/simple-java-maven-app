@@ -1,4 +1,4 @@
-@Library('Jenkins SL') _
+@Library('jenkins-Shared-Library') _
 
 def gv
 
