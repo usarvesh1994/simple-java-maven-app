@@ -14,7 +14,7 @@ pipeline {
 
 
     stages {
-        stage('Building Jar') {
+        stage('Building Jarssss') {
             steps {
                buildJar()
 
