@@ -1,5 +1,5 @@
 FROM openjdk
 WORKDIR /usr/app
-COPY ./target/my-app-1.0-SNAPSHOT.jar /usr/app
-ENTRYPOINT [ "java","-jar", "my-app-1.0-SNAPSHOT.jar" ]
+COPY ./target/my-app-*.jar /usr/app
+CMD  java -jar my-app-*.jar
 EXPOSE 8080

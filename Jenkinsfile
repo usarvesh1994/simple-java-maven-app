@@ -8,14 +8,20 @@ pipeline {
         maven 'maven-3.9' 
     } 
 
-    triggers {
-        pollSCM('* * * * *') // This is a fallback polling trigger, if webhooks fail
-    }
-
+ 
 
     stages {
-        stage('Building Jarssse s') {
+        stage('Increment Version') {
             steps {
+                script {
+                    sh '''
+                        mvn build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion} versions:commit
+                    '''
+                }
+            }
+        }
+        stage('Building Jarssse s') {
+            steps { 
                buildJar()
 
                
