@@ -4,18 +4,16 @@ def gv
 
 pipeline {
     agent any
-      tools {
+    tools {
         maven 'maven-3.9' 
     } 
-
- 
 
     stages {
         stage('Increment Version') {
             steps {
                 script {
                     sh '''#!/bin/bash 
-                        mvn build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion} versions:commit
+                        mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:commit
                     '''
                 }
             }
@@ -26,12 +24,11 @@ pipeline {
             }
         }
 
-         stage('Building image') {
+        stage('Building image') {
             environment {
                 SERVICE_CREDS = credentials('nexus')
             }
             steps {
-                
                 buildImage()
             }
         }
