@@ -77,7 +77,7 @@ pipeline {
                         artifacts: [
                             [artifactId: 'maven-app',
                             classifier: '',
-                            file: 'target/my-app-1.0-SNAPSHOT.war',
+                            file: 'target/maven-web.war',
                             type: 'war']
                         ]
                     )
