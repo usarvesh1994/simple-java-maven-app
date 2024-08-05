@@ -93,10 +93,10 @@ pipeline {
             slackSend(channel: "#devops", color: 'good', message: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} succeeded")
         }
         failure {
-            slackSend(channel: "${SLACK_CHANNEL}", color: 'danger', message: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed")
+            slackSend(channel: "#devops",, color: 'danger', message: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed")
         }
         always {
-            slackSend(channel: "${SLACK_CHANNEL}", color: 'warning', message: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} completed")
+            slackSend(channel: "#devops",, color: 'warning', message: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} completed")
         }
     }
 }
