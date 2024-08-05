@@ -12,14 +12,14 @@ pipeline {
 
     stages {
 
-        stage('Check AWS CLI') {
+         stage('Install AWS CLI') {
             steps {
-                script {
-                    sh 'aws --version'
-                }
+                sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
+                sh 'unzip awscliv2.zip'
+                sh './aws/install'
             }
         }
-        
+
         stage('Fetch Code') {
             steps {
                 git credentialsId: 'githhub', branch: 'master', url: 'https://github.com/usarvesh1994/simple-java-maven-app.git'
