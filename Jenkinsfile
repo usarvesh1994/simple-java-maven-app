@@ -1,6 +1,8 @@
-pipeline {
-    agent any
 
+
+pipeline {
+
+    agent any
     tools {
         maven 'maven-3.9' 
     }
@@ -30,7 +32,7 @@ pipeline {
             }
         }
 
-  stage('Code Checkstyle Analysis') {
+        stage('Code Checkstyle Analysis') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
             }
@@ -43,13 +45,23 @@ pipeline {
     
         }
 
-        stage('SonarQube Analysis') {
+           stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'sonar4.7' // Ensure this matches the SonarQube Scanner configuration name in Jenkins
             }
             steps {
                 withSonarQubeEnv('sonar') { // Ensure this matches the name of the SonarQube server configuration in Jenkins
                     sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=simple-java-maven-app -Dsonar.sources=src/main/java -Dsonar.tests=src/test/java -Dsonar.java.binaries=target/classes -Dsonar.junit.reportPaths=target/surefire-reports -Dsonar.jacoco.reportPaths=target/jacoco.exec"
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    timeout(time: 1, unit: 'HOURS') {
+                        waitForQualityGate abortPipeline: true
+                    }
                 }
             }
         } 
