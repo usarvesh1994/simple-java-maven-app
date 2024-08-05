@@ -66,5 +66,25 @@ pipeline {
             }
         } 
 
+           stage('Artifact uploader') {
+            steps {
+                     nexusArtifactUploader(
+        nexusVersion: 'nexus3',
+        protocol: 'http',
+        nexusUrl: '172.31.0.215:8081',
+        groupId: 'QA',
+        version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+        repository: 'maven-jave',
+        credentialsId: 'NexusCred',
+        artifacts: [
+            [artifactId: 'maven-app',
+             classifier: '',
+             file: 'target/my-app-1.0-SNAPSHOT.jar',
+             type: 'jar']
+        ]
+     )
+            }
+        } 
+
     }
 }
