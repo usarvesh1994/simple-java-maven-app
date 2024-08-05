@@ -57,7 +57,7 @@ pipeline {
                 }
                 steps {
                     withSonarQubeEnv('sonar') { // Ensure this matches the name of the SonarQube server configuration in Jenkins
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=simple-java-maven-app -Dsonar.sources=src/main/java -Dsonar.java.binaries=target/classes -Dsonar.junit.reportPaths=target/surefire-reports -Dsonar.jacoco.reportPaths=target/jacoco.exec"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=simple-java-maven-app -Dsonar.sources=src/main/webapp "
                     }
                 }
             }
