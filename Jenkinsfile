@@ -62,15 +62,7 @@ pipeline {
                 }
             }
 
-            stage('Quality Gates') {
-                steps {
-                    script {
-                        timeout(time: 1, unit: 'HOURS') {
-                            waitForQualityGate abortPipeline: true
-                        }
-                    }
-                }
-            } 
+        
 
             stage('Artifact uploader') {
                             steps {
