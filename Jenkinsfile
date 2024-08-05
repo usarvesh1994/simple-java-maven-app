@@ -51,7 +51,7 @@ pipeline {
     
         }
 
-           stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'sonar4.7' // Ensure this matches the SonarQube Scanner configuration name in Jenkins
             }
@@ -72,49 +72,53 @@ pipeline {
             }
         } 
 
-           stage('Artifact uploader') {
-                    steps {
-                            nexusArtifactUploader(
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                nexusUrl: '172.31.0.215:8081',
-                groupId: 'QA',
-                version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                repository: 'maven-jave',
-                credentialsId: 'NexusCred',
-                artifacts: [
-                    [artifactId: 'maven-app',
-                    classifier: '',
-                    file: 'target/my-app-1.0-SNAPSHOT.war',
-                    type: 'war']
-                ]
-            )
-                    }
-        } 
+        stage('Artifact uploader') {
+                        steps {
+                                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '172.31.0.215:8081',
+                    groupId: 'QA',
+                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                    repository: 'maven-jave',
+                    credentialsId: 'NexusCred',
+                    artifacts: [
+                        [artifactId: 'maven-app',
+                        classifier: '',
+                        file: 'target/my-app-1.0-SNAPSHOT.war',
+                        type: 'war']
+                    ]
+                )
+                        }
+           } 
+
+       
+
+        }
+
 
         stage('Build Docker Image'){
-            steps{
-                script {
-                    docker.build(IMAGE_NAME)
+                steps{
+                    script {
+                        docker.build(IMAGE_NAME)
+                    }
+                
+                    }
                 }
-               
-                }
-            }
 
-
+        
+        
+        
         stage('Image Push'){
             steps{
 
                 script{
                     docker.withRegistry(ECR_REGISTRY, REPO_CRED) {
-  docker.image(IMAGE_NAME).push()
+                        docker.image(IMAGE_NAME).push()
                         }
                 }
 
             }
-        }
-
-
         }
 
     }
