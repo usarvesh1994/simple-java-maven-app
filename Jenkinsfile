@@ -98,6 +98,16 @@ pipeline {
                 }
             }
         }
+
+         stage('Deploy ECS') {
+            steps {
+                withAWS(credentials:'awsjenkins',region:'ap-southeast-2') {
+                       sh 'aws ecs update-service --cluster devcluster --service jenkins-service --force-new-deployment
+'
+                    }
+                
+            }
+        }
     }
 
     post {
