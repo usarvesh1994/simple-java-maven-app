@@ -3,6 +3,12 @@
 pipeline {
 
     agent any
+    environment {
+        REPO_CRED = 'ecr:ap-southeast-2:awsjenkins'
+        REPO_URI = '148000812951.dkr.ecr.ap-southeast-2.amazonaws.com/jenkinsrepo'
+        IMAGE_NAME = "${REPO_URI}:${env.BUILD_ID}"
+        ECR_REGISTRY = 'https://148000812951.dkr.ecr.ap-southeast-2.amazonaws.com'
+    }
     tools {
         maven 'maven-3.9' 
     }
@@ -21,7 +27,7 @@ pipeline {
             post {
                 success {
                     echo 'Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
                 }
             }
         }
@@ -79,12 +85,37 @@ pipeline {
                 artifacts: [
                     [artifactId: 'maven-app',
                     classifier: '',
-                    file: 'target/my-app-1.0-SNAPSHOT.jar',
-                    type: 'jar']
+                    file: 'target/my-app-1.0-SNAPSHOT.war',
+                    type: 'war']
                 ]
             )
                     }
         } 
+
+        stage('Build Docker Image'){
+            steps{
+                script {
+                    docker.build(IMAGE_NAME)
+                }
+               
+                }
+            }
+
+
+        stage('Image Push'){
+            steps{
+
+                script{
+                    docker.withRegistry(ECR_REGISTRY, REPO_CRED) {
+  docker.image(IMAGE_NAME).push()
+                        }
+                }
+
+            }
+        }
+
+
+        }
 
     }
 
