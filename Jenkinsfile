@@ -92,10 +92,6 @@ pipeline {
                             }
             } 
 
-        
-
-            
-
 
             stage('Build Docker Image'){
                     steps{
@@ -109,6 +105,7 @@ pipeline {
             
             
             
+ 
             stage('Image Push'){
                 steps{
 
