@@ -11,6 +11,15 @@ pipeline {
     }
 
     stages {
+
+        stage('Check AWS CLI') {
+            steps {
+                script {
+                    sh 'aws --version'
+                }
+            }
+        }
+        
         stage('Fetch Code') {
             steps {
                 git credentialsId: 'githhub', branch: 'master', url: 'https://github.com/usarvesh1994/simple-java-maven-app.git'
