@@ -88,7 +88,7 @@ pipeline {
             stage('Build Docker Image'){
                     steps{
                         script {
-                            docker.build(IMAGE_NAME)
+                      dockerImage =     docker.build(IMAGE_NAME)
                         }
                     
                         }
@@ -103,7 +103,9 @@ pipeline {
 
                     script{
                         docker.withRegistry(ECR_REGISTRY, REPO_CRED) {
-                            docker.image(IMAGE_NAME).push()
+                            dockerImage.push('${env.BUILD_ID}')
+                            dockerImage.push('latest')
+                            
                             }
                     }
 
